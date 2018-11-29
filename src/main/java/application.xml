@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<context:annotation-config/>
+	
+	<bean id="hello" class="com.spring.Hello" scope="singleton">
+	    <property name="message" value="Hello World!"/>
+	</bean>
+	
+	<bean id="ContextStopHandler" class="com.spring.ContextStopHandler" />
+	
+	
+	<bean id="MyEventsPublisher" class="com.spring.myEvent.MyEventsPublisher"/>
+	
+	<bean id="MyEventsHandler" class="com.spring.myEvent.MyEventsHandler"/>
+	
+	
+	<aop:config>
+		<aop:aspect id="log" ref="logging">
+		
+		<aop:pointcut expression="execution(* com.spring.aop.Student.*(..))" id="selectAll"/>
+		
+		<aop:before method="beforeAdvice" pointcut-ref="selectAll"/>
+		
+		<aop:after method="afterAdvice" pointcut-ref="selectAll"/>
+		
+		</aop:aspect>
+	</aop:config>
+	<bean id="logging" class="com.spring.aop.Logging" />
+	
+	<bean id="Student" class="com.spring.aop.Student">
+		<property name="name" value="张三"/>
+		<property name="age" value="12"/>
+	</bean>
+	
+</beans>
